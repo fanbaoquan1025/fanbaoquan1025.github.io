@@ -1,29 +1,75 @@
-
 <html>
-<head>
-    <style type="text/css">
-    #btnClick {
-    height:200px; 
-    width:100px;
-    position:absolute;
-    left:50%;
-	top: 50%;
-}
-    </style>
-</head>
+<title>Progress to Mastery</title>
+<body>
+    <section>
+        <p>Studies show that it will take at least 10,000 hours to master a skill. However, to be decent at any given skill it will only take about 20 hours of deliberate practice.</p>
+            <h1 id="skill-display"></h1>
 
-<div id="showCount"></div>
-<input type="button" id="btnClick" value="Click me" onclick="CountFun()"/>
-
+    </section>
+    <div id="decent-percent" class="decent">0% to Decent Skill Level. 1200 minute(s) to go.</div>
+    <div id="master-percent" class="mastery">0% to Master Skill Level. 600000 minute(s) to go.</div>
+    <form>
+        <p id="total-min"></p>
+        <input type="text" id="userInput">minutes spent on skill.
+        <input type="button" value="Calculate" onclick="compute()">
+    </form>
+    <button onclick="setSkill()">Set Skill</button>
+    <div id="storage"></div>
+</body>
 <script>
-    var cnt=0;
-    function CountFun(){
-     cnt=parseInt(cnt)+parseInt(1);
-     var divData=document.getElementById("showCount");
-     divData.innerHTML="Number of Downloads: ("+cnt +")";
-     if (cnt >= 5) {
-        window.location.href = "another.html";
-     }
+var decent = 1200;
+var master = 600000;
+var minutes;
+var decentOriginal;
+var masterOriginal;
+var totalDecent = 0;
+var totalMaster = 0;
+var decentLeft = 1200;
+var masterLeft = 600000;
+var totalMin = 0;
+
+function compute() {
+    minutes = parseInt(document.getElementById('userInput').value) || 0;
+    decentOriginal = minutes / decent * 100;
+    masterOriginal = minutes / master * 100;
+    updatePercent();
+    localStorage["time"] = (parseInt(localStorage["time"]) || 0) + minutes;
+    document.getElementById('storage').innerHTML = localStorage["time"] + " minutes";
+}
+
+function updatePercent() {
+    var decentPercent = document.getElementById('decent-percent');
+    var masterPercent = document.getElementById('master-percent');
+    var decentCompute = Math.round(decentOriginal * 100) / 100;
+    var masterCompute = Math.round(masterOriginal * 100) / 100;
+    decentLeft = decentLeft - minutes;
+    masterLeft = masterLeft - minutes;
+    totalDecent = totalDecent + decentCompute;
+    totalMaster = totalMaster + masterCompute;
+    totalMin = Math.round(totalMin + parseInt(minutes) / 60);
+    if (decentLeft <= 0) {
+        totalDecent = 100;
+        decentLeft = 0;
+        decentCompute = 0;
     }
+    if (masterLeft <= 0) {
+        totalMaster = 100;
+        masterLeft = 0;
+        masterCompute = 0;
+    }
+    if (totalMin >= 600000) {
+        totalMin = 600000;
+    }
+
+
+    decentPercent.innerHTML = totalDecent.toFixed(1) + "%" + " to Decent Skill Level." + " " + decentLeft + " minute(s) to go.";
+    masterPercent.innerHTML = totalMaster.toFixed(2) + "%" + " to Master Skill Level." + " " + masterLeft + " minute(s) to go.";
+    document.getElementById('total-min').innerHTML = totalMin + " hours spent on skill acquisition.";
+}
+
+function setSkill() {
+    var whatSkill = prompt("What skill are you working on?");
+    document.getElementById('skill-display').innerHTML = "I'm Learning " + whatSkill;
+}
   </script>
 </html>
