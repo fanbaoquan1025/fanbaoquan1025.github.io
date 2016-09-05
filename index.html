@@ -1,4 +1,16 @@
+
 <html>
+<head>
+    <style type="text/css">
+    #btnClick {
+    height:200px; 
+    width:100px;
+    position:absolute;
+    left:50%;
+	top: 50%;
+}
+    </style>
+</head>
 
 <div id="showCount"></div>
 <input type="button" id="btnClick" value="Click me" onclick="CountFun()"/>
@@ -9,7 +21,7 @@
      cnt=parseInt(cnt)+parseInt(1);
      var divData=document.getElementById("showCount");
      divData.innerHTML="Number of Downloads: ("+cnt +")";
-     if (cnt == 5) {
+     if (cnt >= 5) {
         window.location.href = "another.html";
      }
     }
