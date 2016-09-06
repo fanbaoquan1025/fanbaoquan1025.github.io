@@ -11,6 +11,7 @@
                 }) ;
                 ajax.done(function(data){
                     jQuery('div#counter').html(data) ;
+                    alert('ajax success') ;
                 }) ;
                 ajax.fail(function(data){
                     alert('ajax fail : url of ajax request is not reachable') ;
