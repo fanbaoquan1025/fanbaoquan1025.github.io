@@ -1,38 +1,23 @@
 <html>
-
-   <head>
-      <title>The jQuery Example</title>
-      <script type = "text/javascript" 
-         src = "http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-        
-      <script type = "text/javascript" language = "javascript">
-         $(document).ready(function() {
-            
-            $("#driver").click(function(event){
-               $.get( 
-                  "test.php",
-                  { name: "Zara" },
-                  function(data) {
-                     $('#stage').html(data);
-                  }
-               );
-            });
-                
-         });
-      </script> 
-   </head>
-    
-   <body>
-    
-      <p>Click on the button to load result.html file −</p>
-        
-      <span id = "stage" style = "background-color:#cc0;">
-         STAGE
-      </span>
-        
-      <div><input type = "button" id = "driver" 
-         value = "Load Data" /></div>
-    
-   </body>
-    
+    <head>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript">
+            jQuery(document).on('click','a#download',function(){
+                jQuery('div#counter').html('Loading...') ;
+                var ajax = jQuery.ajax({
+                    method : 'get',
+                    url : '/result.php', // Link to this page
+                    data : { 'increase' : '1' }
+                }) ;
+                ajax.done(function(data){
+                    jQuery('div#counter').html(data) ;
+                }) ;
+                ajax.fail(function(data){
+                    alert('ajax fail : url of ajax request is not reachable') ;
+                }) ;
+            }) ;
+        </script>
+    </head>
+    <div id="counter"><?php echo $counter ; ?></div>
+    <a href="" id="download" onclick="window.open(this.href);return false;">Download btn</a>
 </html>
